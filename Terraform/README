@@ -1,0 +1,19 @@
+ESXI/VCSA et Terraform
+Installation et configuration de VMware ESXi
+VMware ESXi est un hyperviseur de type 1 (bare metal) qui permet de virtualiser des machines directement sur le matériel physique. L’auteur commence par déployer ESXi sur une machine, probablement physique ou virtualisée.
+Présentation de l’hyperviseur ESXi
+Après l’installation, la configuration de base de l’ESXi est effectuée : définition du mot de passe administrateur, configuration réseau (adresse IP, passerelle, DNS), et activation des services d’administration nécessaires (SSH, accès Web, etc.).
+Accès à l’interface Web
+Une fois la configuration terminée, l’auteur confirme que l’hyperviseur est fonctionnel en se connectant à l’interface Web via un navigateur. L’accès à l’interface confirme que l’ESXi est opérationnel et accessible à distance pour la gestion.
+Déploiement de VMware vCenter Server (VCSA)
+vCenter Server est la solution de gestion centralisée de VMware pour les hôtes ESXi. Elle permet la création de clusters, la gestion des ressources partagées et l’administration des VMs via une interface unique. Le vCenter Server Appliance (VCSA) est déployé sous forme de machine virtuelle. L’auteur vérifie l’accessibilité via son interface Web après installation.
+Préparation d’une machine Debian 12 pour l’utilisation de Terraform
+L’objectif est de préparer une machine Debian 12 qui servira à l’automatisation des déploiements d’infrastructure via Terraform. Mise à jour du système et installation d’outils comme curl, unzip et sudo sont effectuées.
+Installation et configuration de Terraform
+Terraform est téléchargé depuis le site officiel de HashiCorp.
+Création du fichier de configuration Terraform main.tf
+Le fichier main.tf contient la configuration déclarative de l’infrastructure à déployer. Il inclut la déclaration du provider, des ressources à créer, et des paramètres réseau.
+Initialisation, validation et application de la configuration
+Initialisation de Terraform avec terraform init, validation avec terraform validate, puis application avec terraform apply. Deux machines virtuelles sont déployées.
+Configuration réseau et tests de connectivité
+Une machine reçoit une IP fixe. Un test ping est effectué entre les machines pour valider la connectivité réseau.
