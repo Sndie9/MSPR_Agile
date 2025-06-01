@@ -1,0 +1,16 @@
+- name: Télécharger Helm
+  get_url:
+    url: https://get.helm.sh/helm-v3.14.0-linux-amd64.tar.gz
+    dest: /tmp/helm.tar.gz
+
+- name: Extraire Helm
+  unarchive:
+    src: /tmp/helm.tar.gz
+    dest: /tmp/
+    remote_src: yes
+
+- name: Déplacer binaire helm
+  shell: mv /tmp/linux-amd64/helm /usr/local/bin/helm && chmod +x /usr/local/bin/helm
+  args:
+    executable: /bin/bash
+

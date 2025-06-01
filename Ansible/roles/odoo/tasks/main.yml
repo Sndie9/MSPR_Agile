@@ -1,0 +1,6 @@
+- name: Installer Helm
+  include_tasks: install_helm.yml
+
+- name: Déployer Odoo via Helm
+  include_tasks: helm_odoo_deploy.yml
+

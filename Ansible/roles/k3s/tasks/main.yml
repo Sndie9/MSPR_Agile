@@ -1,0 +1,8 @@
+- name: Déploiement control plane
+  include_tasks: control_plane.yml
+  when: inventory_hostname in groups['control_plane']
+
+- name: Déploiement workers
+  include_tasks: worker.yml
+  when: inventory_hostname in groups['workers']
+

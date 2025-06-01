@@ -1,0 +1,17 @@
+service:
+  type: ClusterIP
+
+ingress:
+  enabled: true
+  ingressClassName: traefik
+  hostname: odoo.local
+  path: /
+  tls: false
+
+postgresql:
+  auth:
+    postgresPassword: my-postgres-pw
+    password: my-odoo-db-pw
+odooUsername: user
+odooPassword: bitnami1234
+

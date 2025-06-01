@@ -1,0 +1,12 @@
+- name: Obtenir le token du control-plane
+  shell: cat /var/lib/rancher/k3s/server/node-token
+  register: k3s_token
+  delegate_to: k3s1
+  become: true
+
+- name: Installer K3s sur le worker
+  shell: |
+    curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION={{ k3s_version }} K3S_URL=https://192.168.202.130:6443 K3S_TOKEN={{ k3s_token.stdout }} sh -
+  args:
+    executable: /bin/bash
+

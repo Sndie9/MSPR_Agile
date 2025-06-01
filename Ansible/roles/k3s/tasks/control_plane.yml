@@ -1,0 +1,6 @@
+- name: Installer K3s sur le control plane
+  shell: |
+    curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION={{ k3s_version }} sh -s - --write-kubeconfig-mode 644 --disable traefik
+  args:
+    executable: /bin/bash
+

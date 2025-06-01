@@ -1,0 +1,6 @@
+- name: Déploiement d'Odoo via Helm
+  hosts: control_plane
+  become: true
+  roles:
+    - odoo
+

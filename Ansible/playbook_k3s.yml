@@ -1,0 +1,6 @@
+- name: Déploiement Kubernetes avec K3s
+  hosts: all
+  become: true
+  roles:
+    - k3s
+

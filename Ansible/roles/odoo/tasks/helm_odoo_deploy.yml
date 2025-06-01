@@ -1,0 +1,29 @@
+- name: Générer le fichier de valeurs pour Helm
+  template:
+    src: odoo-values.yml.j2
+    dest: /tmp/odoo-values.yml
+
+- name: Ajouter le dépôt Bitnami
+  shell: helm repo add bitnami https://charts.bitnami.com/bitnami
+  args:
+    executable: /bin/bash
+
+- name: Mettre à jour les dépôts Helm
+  shell: helm repo update
+  args:
+    executable: /bin/bash
+
+- name: Créer le namespace odoo
+  shell: kubectl create namespace odoo --dry-run=client -o yaml | kubectl apply -f -
+  args:
+    executable: /bin/bash
+
+- name: Déployer Odoo avec Helm
+  shell: |
+    export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+    helm upgrade --install odoo bitnami/odoo \
+      --namespace odoo \
+      -f /tmp/odoo-values.yml
+  args:
+    executable: /bin/bash
+
