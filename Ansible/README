@@ -1,0 +1,126 @@
+Cette vise à déployer un cluster Kubernetes avec K3s via Ansible, installer Helm, puis déployer l'application Odoo à l'aide du chart Helm de Bitnami. L'ensemble de l'infrastructure repose sur des machines virtuelles gérées sous vCenter.
+
+Structure du projet
+
+Etape 1 : Déploiement du cluster Kubernetes avec Ansible
+
+projet-mspr-ansible/
+├── inventory.ini
+├── playbook_k3s.yml
+├── group_vars/
+│   └── all.yml
+└── roles/
+    └── k3s/
+        └── tasks/
+            ├── main.yml
+            ├── control_plane.yml
+            └── worker.yml
+
+Etape 2 : Déploiement de l'application Odoo
+
+Ansible_Conf/
+├── playbook_odoo.yml
+└── roles/
+    └── odoo/
+        ├── tasks/
+        │   ├── main.yml
+        │   ├── install_helm.yml
+        │   └── helm_odoo_deploy.yml
+        └── templates/
+            └── odoo-values.yml.j2
+
+Configuration de l'inventaire (inventory.ini)
+
+[control_plane]
+k3s1 ansible_host=192.168.202.13X
+
+[workers]
+k3sw1 ansible_host=192.168.202.13X
+k3sw2 ansible_host=192.168.202.13X
+
+[all:vars]
+ansible_user=adm1
+ansible_ssh_private_key_file=~/.ssh/id_rsa
+
+Clé SSH et accès
+
+ssh-keygen -t rsa -b 4096
+ssh-copy-id adm1@192.168.202.13X  # K3s1
+ssh-copy-id adm1@192.168.202.13X  # K3sW1
+ssh-copy-id adm1@192.168.202.13X  # K3sW2
+
+Installation d'Ansible
+
+sudo apt update && sudo apt install ansible -y
+
+Vérification :
+
+ansible --version
+
+Déploiement du cluster Kubernetes avec Ansible
+
+ansible-playbook -i inventory.ini playbook_k3s.yml
+
+Vérification :
+
+ssh adm1@192.168.202.13X
+sudo kubectl get nodes
+
+Déploiement de l'application Odoo via Helm
+
+ansible-playbook -i inventory.ini playbook_odoo.yml
+
+Cela effectue :
+
+L'installation de Helm
+
+L'ajout du dépôt Bitnami
+
+La création du namespace odoo
+
+Le déploiement d'Odoo avec un fichier de valeurs personnalisé
+
+L'exposition de l'application via un Ingress odoo.local
+
+Installation de Traefik (Ingress Controller)
+
+helm repo add traefik https://traefik.github.io/charts
+helm repo update
+helm install traefik traefik/traefik --namespace kube-system --create-namespace
+
+Vérification des Ingress :
+
+kubectl get ingress -A
+
+Exemple :
+
+odoo        odoo   traefik   odoo.local   192.168.202.13X,...   80   ...
+
+Accès à Odoo
+
+URL : http://odoo.local
+
+Identifiants :
+
+Nom d'utilisateur : user@example.com
+
+Mot de passe : PASSWORD
+
+Récapitulatif technique
+
+Infrastructure déployée via Ansible
+
+Cluster Kubernetes K3s sur 3 VMs (1 master, 2 workers)
+
+Helm utilisé pour déployer Odoo avec PostgreSQL
+
+Ingress exposé via Traefik avec nom de domaine odoo.local
+
+Historique et vérification
+
+Test des pods : kubectl get pods -n odoo
+
+Services : kubectl get svc -n odoo
+
+Ingress : kubectl get ingress -n odoo
+
